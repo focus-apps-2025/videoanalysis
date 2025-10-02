@@ -1,0 +1,12 @@
+fastapi
+uvicorn
+pymongo
+python-dotenv
+transformers
+torch
+librosa
+opencv-python
+beautifulsoup4
+requests
+scikit-learn
+yt-dlp
