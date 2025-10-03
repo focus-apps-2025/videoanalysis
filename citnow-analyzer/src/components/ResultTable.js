@@ -115,77 +115,77 @@ export default function ResultsTable({ onSelect }) {
   };
 
   // Enhanced Excel export function with better data extraction
-const exportToExcel = async () => {
-  setExportLoading(true);
-  try {
-    const rows = list.map(item => {
-      const m  = item.citnow_metadata   || {};
-      const v  = item.video_analysis    || {};
-      const a  = item.audio_analysis    || {};
-      const t  = item.transcription      || item.transcription_analysis || {};
-      const s  = item.summarization      || item.summary_analysis        || {};
-      const x  = item.translation        || item.translation_analysis    || {};
-      const dt = new Date(item.created_at);
+  const exportToExcel = async () => {
+    setExportLoading(true);
+    try {
+      const rows = list.map(item => {
+        const m = item.citnow_metadata || {};
+        const v = item.video_analysis || {};
+        const a = item.audio_analysis || {};
+        const t = item.transcription || item.transcription_analysis || {};
+        const s = item.summarization || item.summary_analysis || {};
+        const x = item.translation || item.translation_analysis || {};
+        const dt = new Date(item.created_at);
 
-      return {
-        Dealership:        m.dealership    || '',
-        Vehicle:           m.vehicle || m.registration || '',
-        'Service Advisor': m.service_advisor || '',
-        VIN:               m.vin            || '',
-        Email:             m.email          || '',
-        Phone:             m.phone          || '',
+        return {
+          Dealership: m.dealership || '',
+          Vehicle: m.vehicle || m.registration || '',
+          'Service Advisor': m.service_advisor || '',
+          VIN: m.vin || '',
+          Email: m.email || '',
+          Phone: m.phone || '',
 
-        'Video Quality':   `${(v.quality_score||0).toFixed(1)} ${v.quality_label||''}`.trim(),
-        'Audio Quality':   `${(a.score||0).toFixed(1)} ${a.prediction||''}`.trim(),
+          'Video Quality': `${(v.quality_score || 0).toFixed(1)} ${v.quality_label || ''} (${v.quality_note || 'No note'})`.trim(),
+          'Audio Quality': `${(a.score || 0).toFixed(1)} ${a.prediction || ''} (${a.note || 'No note'})`.trim(),
 
-        Transcription:     t.text || t.transcription_text || '',
-        Summary:           s.summary || s.text          || '',
-        Translation:       x.translated_text || x.text || '',
+          Transcription: t.text || t.transcription_text || '',
+          Summary: s.summary || s.text || '',
+          Translation: x.translated_text || x.text || '',
 
-        Date:              dt.toLocaleDateString(),
-       
-      };
-    });
+          Date: dt.toLocaleDateString(),
 
-    if (!rows.length) {
-      alert("No data to export");
-      return;
+        };
+      });
+
+      if (!rows.length) {
+        alert("No data to export");
+        return;
+      }
+
+      // build CSV
+      const headers = Object.keys(rows[0]);
+      const lines = [
+        headers.join(','),
+        ...rows.map(r =>
+          headers.map(h => {
+            let cell = '' + (r[h] ?? '');
+            cell = cell.replace(/"/g, `""`);
+            return (cell.includes(',') || cell.includes('\n'))
+              ? `"${cell}"`
+              : cell;
+          }).join(',')
+        )
+      ];
+      const csv = lines.join('\r\n');
+
+      // prepend BOM so Excel opens as UTF-8
+      const BOM = '\uFEFF';
+      const blob = new Blob([BOM + csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `citnow-export-${new Date().toISOString().slice(0, 10)}.csv`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+    } catch (err) {
+      console.error("Export failed", err);
+      alert("Failed to export data");
+    } finally {
+      setExportLoading(false);
     }
-
-    // build CSV
-    const headers = Object.keys(rows[0]);
-    const lines = [
-      headers.join(','), 
-      ...rows.map(r =>
-        headers.map(h => {
-          let cell = '' + (r[h] ?? '');
-          cell = cell.replace(/"/g, `""`);
-          return (cell.includes(',')||cell.includes('\n')) 
-            ? `"${cell}"` 
-            : cell;
-        }).join(',')
-      )
-    ];
-    const csv = lines.join('\r\n');
-
-    // prepend BOM so Excel opens as UTF-8
-    const BOM = '\uFEFF';
-    const blob = new Blob([BOM + csv], { type: 'text/csv;charset=utf-8;' });
-    const url  = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `citnow-export-${new Date().toISOString().slice(0,10)}.csv`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-
-  } catch (err) {
-    console.error("Export failed", err);
-    alert("Failed to export data");
-  } finally {
-    setExportLoading(false);
-  }
-};
+  };
 
 
 
@@ -311,7 +311,7 @@ const exportToExcel = async () => {
         </TableCell>
 
         <TableCell sx={{ py: 2 }}>
-          <Tooltip title={`${getQualityStatus(video.quality_score)} - ${video.quality_score || 0}/100`} arrow>
+          <Tooltip title={`${getQualityStatus(video.quality_score)} - ${video.quality_score || 0}/100 ${video.quality_note ? `| Note: ${video.quality_note}` : ''}`} arrow>
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <Videocam sx={{ color: 'primary.main', mr: 1, fontSize: 20 }} />
               <Chip
@@ -325,7 +325,7 @@ const exportToExcel = async () => {
         </TableCell>
 
         <TableCell sx={{ py: 2 }}>
-          <Tooltip title={`${getAudioStatus(audio.prediction)} - ${audio.quality_score || 0}/100`} arrow>
+          <Tooltip title={`${getAudioStatus(audio.prediction)} - ${Math.round(audio.score) || 0}/100 ${audio.note ? `| Note: ${audio.note}` : ''}`} arrow>
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <Mic sx={{ color: 'primary.main', mr: 1, fontSize: 20 }} />
               <Chip
