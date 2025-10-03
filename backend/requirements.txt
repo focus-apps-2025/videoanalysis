@@ -10,3 +10,4 @@ beautifulsoup4
 requests
 scikit-learn
 yt-dlp
+orjson
