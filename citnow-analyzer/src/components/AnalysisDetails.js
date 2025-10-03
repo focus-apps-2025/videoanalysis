@@ -165,6 +165,7 @@ export default function AnalysisDetails({ result: rawResult, onBack }) {
                   title="Video Quality"
                   score={videoAnalysis.quality_score}
                   label={videoAnalysis.quality_label}
+                  note={videoAnalysis.quality_note}
                   icon={<Videocam />}
                 />
               </Grid>
@@ -177,6 +178,7 @@ export default function AnalysisDetails({ result: rawResult, onBack }) {
                       : audioAnalysis.score || 0
                   }
                   label={audioAnalysis.prediction}
+                  note={videoAnalysis.quality_note}
                   icon={<Mic />}
                 />
               </Grid>
