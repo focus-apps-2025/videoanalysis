@@ -50,7 +50,7 @@ import axios from 'axios';
 
 // Create axios instance
 const api = axios.create({
-  baseURL: 'http://localhost:5000/results',
+  baseURL: 'https://videoanalysis-e55w.onrender.com/results',
   timeout: 30000,
 });
 
