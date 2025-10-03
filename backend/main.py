@@ -44,7 +44,11 @@ def clean_results(obj):
 # Enable CORS for React
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://focusvideoanalylis.netlify.app"],
+    allow_origins=origins = [
+    "http://localhost:3000",                  #  local development
+    "https://focusvideoanalylis.netlify.app",   #  live Netlify frontend
+    "https://videoanalysis-e55w.onrender.com"   #  live Render backend
+],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
