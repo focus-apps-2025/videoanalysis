@@ -59,7 +59,7 @@ export default function AnalysisForm({ onAnalyze }) {
     setError(null);
     
     try {
-      const res = await api.post("http://localhost:5000/analyze", {
+      const res = await api.post("https://videoanalysis-e55w.onrender.com/analyze", {
         citnow_url: url, 
         transcription_language: lang, 
         target_language: target
