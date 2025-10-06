@@ -42,7 +42,7 @@ const LANGS = [
 
 // Create axios instance with timeout
 const api = axios.create({
-  baseURL: 'http://localhost:5000/analyze',
+  baseURL: 'https://videoanalysis-e55w.onrender.com/analyze',
  // 30 seconds
 });
 
