@@ -24,6 +24,7 @@ import axios from 'axios';
 
 const LANGS = [
   { code: "auto", name: "Auto Detect" },
+  { code:"en",  name:"english"},
   { code: 'as', name: 'Assamese' },
   { code: 'bn', name: 'Bengali' },
   { code: 'gu', name: 'Gujarati' },
@@ -42,7 +43,7 @@ const LANGS = [
 
 // Create axios instance with timeout
 const api = axios.create({
-  baseURL: 'https://videoanalysis-e55w.onrender.com/analyze',
+  baseURL: 'http://localhost:5000/analyze',
  // 30 seconds
 });
 
@@ -59,7 +60,7 @@ export default function AnalysisForm({ onAnalyze }) {
     setError(null);
     
     try {
-      const res = await api.post("https://videoanalysis-e55w.onrender.com/analyze", {
+      const res = await api.post("http://localhost:5000/analyze", {
         citnow_url: url, 
         transcription_language: lang, 
         target_language: target
