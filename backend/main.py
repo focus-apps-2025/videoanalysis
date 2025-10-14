@@ -31,7 +31,7 @@ from pydantic import BaseModel
 from pymongo import MongoClient
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
-from HELLO import UnifiedMediaAnalyzer
+from unified_media_analyzer import UnifiedMediaAnalyzer
 
 load_dotenv()
 
