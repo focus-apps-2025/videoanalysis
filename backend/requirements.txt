@@ -5,9 +5,10 @@ python-dotenv
 transformers
 torch
 librosa
-opencv-python
+opencv-python-headless  
 beautifulsoup4
 requests
 scikit-learn
 yt-dlp
-orjson
+huggingface-hub          
+pydub                    
