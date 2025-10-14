@@ -117,7 +117,7 @@ app = FastAPI(title="CitNow Analyzer API", lifespan=lifespan)
 origins = [
     "http://localhost:3000", 
     "http://localhost:3001",
-    "https://your-netlify-app.netlify.app"  # Add your Netlify domain
+    "https://focusvideoanalylis.netlify.app" 
 ]
 app.add_middleware(
     CORSMiddleware,
