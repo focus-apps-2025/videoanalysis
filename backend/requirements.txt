@@ -13,3 +13,4 @@ yt-dlp
 huggingface-hub
 pydub
 pandas
+python-multipart
