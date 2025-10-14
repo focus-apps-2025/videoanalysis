@@ -8,7 +8,8 @@ import {
   useTheme,
   useMediaQuery,
 } from '@mui/material';
-import { Analytics, History } from '@mui/icons-material';
+import { Analytics, History, Upload } from '@mui/icons-material';
+
 
 export default function Navbar({ activeTab, onTabChange, onBack }) {
   const theme = useTheme();
@@ -64,6 +65,22 @@ export default function Navbar({ activeTab, onTabChange, onBack }) {
           >
             {isMobile ? 'New' : 'New Analysis'}
           </Button>
+          
+          <Button
+            startIcon={<Upload />}
+            onClick={() => onTabChange('bulk')}
+            variant={activeTab === 'bulk' ? 'contained' : 'text'}
+            size={isMobile ? 'small' : 'medium'}
+            sx={{
+              borderRadius: 3,
+              ...(activeTab === 'bulk' && {
+                backgroundColor: 'primary.main',
+              }),
+            }}
+          >
+            {isMobile ? 'Bulk' : 'Bulk Upload'}
+          </Button>
+          
           <Button
             startIcon={<History />}
             onClick={() => onTabChange('history')}
